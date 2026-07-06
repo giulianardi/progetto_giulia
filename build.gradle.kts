@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id ("application")
 }
 
 group = "it.unicam.cs.mpgc.rpg130675"
@@ -14,8 +15,14 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.formdev:flatlaf:3.4")
+    implementation("com.formdev:flatlaf-intellij-themes:3.4")
 }
 
 tasks.test {
     useJUnitPlatform()
+}
+
+application {
+    mainClass.set("it.unicam.cs.mpgc.rpg130675.gui.Applicazione")
 }

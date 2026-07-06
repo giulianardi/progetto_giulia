@@ -11,6 +11,11 @@ public class BorsaDiStudio extends EventoCasualePositivo {
     private static final int BONUS_STRESS_MASSIMO = 25;
 
     @Override
+    public String getTitolo() {
+        return "Borsa di Studio!";
+    }
+
+    @Override
     public String getDescrizione() {
         return "Miracolo della segreteria studenti! Hai ricevuto un rimborso " +
                 "inaspettato sul tuo conto bancario.";

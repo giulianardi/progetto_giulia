@@ -13,6 +13,8 @@ import it.unicam.cs.mpgc.rpg130675.model.studente.Studente;
  */
 public interface EventoCasuale {
 
+        String getTitolo();
+
         String getDescrizione();
 
     /**

@@ -11,6 +11,11 @@ public class PaccoDaGiu extends EventoCasualePositivo {
     private static final int BONUS_STRESS_MASSIMO = 35;
 
     @Override
+    public String getTitolo() {
+        return "Pacco da giù!";
+    }
+
+    @Override
     public String getDescrizione() {
         return "Ricevi una fornitura enorme di cibo da casa. " +
                 "Mangi bene, non spendi soldi e il morale sale alle stelle.";

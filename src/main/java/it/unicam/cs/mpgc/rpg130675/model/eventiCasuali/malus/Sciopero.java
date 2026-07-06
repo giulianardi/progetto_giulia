@@ -11,6 +11,11 @@ public class Sciopero extends EventoCasualeNegativo {
     private static final int MALUS_STRESS_MASSIMO = 25;
 
     @Override
+    public String getTitolo() {
+        return "Sciopero dei mezzi :(";
+    }
+
+    @Override
     public String getDescrizione() {
         return "Autobus cancellati e treni in ritardo. Arrivare in università oggi è stata una vera odissea!";
     }

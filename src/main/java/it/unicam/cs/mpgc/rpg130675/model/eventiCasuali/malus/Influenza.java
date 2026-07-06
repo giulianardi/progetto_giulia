@@ -8,6 +8,11 @@ public class Influenza extends EventoCasualeNegativo {
     private static final int MALUS_ENERGIA_MASSIMO = 50;
 
     @Override
+    public String getTitolo() {
+        return "Brutta Influenza :(";
+    }
+
+    @Override
     public String getDescrizione() {
         return "Ti sei preso un brutto virus influenzale. Febbre e tosse ti mettono fisicamente KO.";
     }

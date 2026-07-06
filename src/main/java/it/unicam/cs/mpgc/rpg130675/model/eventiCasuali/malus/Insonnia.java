@@ -11,6 +11,11 @@ public class Insonnia extends EventoCasualeNegativo {
     private static final int MALUS_STRESS_MASSIMO = 20;
 
     @Override
+    public String getTitolo() {
+        return "Insonnia pre-esame :(";
+    }
+
+    @Override
     public String getDescrizione() {
         return "L'ansia per la sessione non ti ha fatto chiudere occhio per tutta la notte. " +
                 "Ti senti uno zombie.";

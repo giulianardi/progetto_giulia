@@ -11,6 +11,11 @@ public class ComputerGuasto extends EventoCasualeNegativo {
     private static final int MALUS_STRESS_MASSIMO = 30;
 
     @Override
+    public String getTitolo() {
+        return "Computer Guasto :(";
+    }
+
+    @Override
     public String getDescrizione() {
         return "Schermata blu della morte! Il tuo portatile ti ha abbandonato e la riparazione " +
                 "ti costa un occhio della testa.";

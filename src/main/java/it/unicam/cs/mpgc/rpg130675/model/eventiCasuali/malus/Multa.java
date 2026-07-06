@@ -11,6 +11,11 @@ public class Multa extends EventoCasualeNegativo {
     private static final int MALUS_STRESS_MASSIMO = 20;
 
     @Override
+    public String getTitolo() {
+        return "Multa salata :(";
+    }
+
+    @Override
     public String getDescrizione() {
         return "Eri in ritardo e hai dimenticato di fare il biglietto. " +
                 "Il controllore non ha voluto sentire ragioni.";

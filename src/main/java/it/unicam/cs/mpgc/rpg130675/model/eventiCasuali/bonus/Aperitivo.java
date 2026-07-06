@@ -11,6 +11,11 @@ public class Aperitivo extends EventoCasualePositivo {
     private static final int BONUS_STRESS_MASSIMO = 30;
 
     @Override
+    public String getTitolo() {
+        return "Aperitivo offerto!";
+    }
+
+    @Override
     public String getDescrizione() {
         return "Incontri dei vecchi amici che insistono per offrirti l'aperitivo. " +
                 "Mangi al buffet e ti rilassi senza tirare fuori un centesimo!";

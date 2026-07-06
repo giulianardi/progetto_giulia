@@ -8,6 +8,11 @@ public class AppuntiPerfetti extends EventoCasualePositivo {
     private static final int BONUS_CONOSCENZA_MASSIMO = 25;
 
     @Override
+    public String getTitolo() {
+        return "Appunti perfetti!";
+    }
+
+    @Override
     public String getDescrizione() {
         return "Un collega degli anni precedenti ti regala i suoi riassunti perfetti " +
                 "con le domande tipiche del prof.";
