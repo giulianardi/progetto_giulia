@@ -8,6 +8,7 @@ import it.unicam.cs.mpgc.rpg130675.model.eventiCasuali.bonus.BorsaDiStudio;
 import it.unicam.cs.mpgc.rpg130675.model.eventiCasuali.bonus.PaccoDaGiu;
 import it.unicam.cs.mpgc.rpg130675.model.eventiCasuali.malus.*;
 import it.unicam.cs.mpgc.rpg130675.model.studente.Facolta;
+import it.unicam.cs.mpgc.rpg130675.model.studente.Studente;
 import it.unicam.cs.mpgc.rpg130675.model.studente.StudenteBase;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class Creatore {
      * @param facoltaScelta la facoltà di appartenenza che definisce il percorso di studi.
      * @return un oggetto {@link StudenteBase} inizializzato.
      */
-    public StudenteBase creaStudente(String nomeScelto, Facolta facoltaScelta) {
+    public Studente creaStudente(String nomeScelto, Facolta facoltaScelta) {
         return new StudenteBase(nomeScelto, facoltaScelta);
     }
 

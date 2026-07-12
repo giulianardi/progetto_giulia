@@ -6,6 +6,7 @@ import it.unicam.cs.mpgc.rpg130675.model.azioni.Attivita;
 import it.unicam.cs.mpgc.rpg130675.model.esame.Esame;
 import it.unicam.cs.mpgc.rpg130675.model.eventiCasuali.EventoCasuale;
 import it.unicam.cs.mpgc.rpg130675.model.studente.Facolta;
+import it.unicam.cs.mpgc.rpg130675.model.studente.Studente;
 import it.unicam.cs.mpgc.rpg130675.model.studente.StudenteBase;
 import it.unicam.cs.mpgc.rpg130675.persistence.EsameSalvato;
 import it.unicam.cs.mpgc.rpg130675.persistence.JsonStoricoRepository;
@@ -22,7 +23,7 @@ import java.util.Random;
  */
 public class GameController {
 
-    private StudenteBase studente;
+    private Studente studente;
     private List<Esame> esamiDaSostenere;
     private List<EventoCasuale> mazzoEventi;
     private Esame esameAttuale;
