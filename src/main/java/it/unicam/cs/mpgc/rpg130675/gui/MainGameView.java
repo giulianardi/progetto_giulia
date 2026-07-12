@@ -1,27 +1,25 @@
 package it.unicam.cs.mpgc.rpg130675.gui;
+
 import it.unicam.cs.mpgc.rpg130675.model.azioni.TipoAzione;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.*;
 
-import javax.swing.*;
-import java.awt.*;
+public class MainGameView extends BorderPane {
 
+    private Label turnLabel;
+    private Label knowledgeLabel;
+    private Label energyLabel;
+    private Label stressLabel;
+    private Label moneyLabel;
 
-public class MainGameView extends JPanel {
-
-    // Etichette per mostrare i dati
-    private JLabel turnLabel;
-    private JLabel knowledgeLabel;
-    private JLabel energyLabel;
-    private JLabel stressLabel;
-    private JLabel moneyLabel;
-
-    // Bottoni per le azioni
-    private JButton studyButton;
-    private JButton workButton;
-    private JButton partyButton;
-    private JButton sleepButton;
-
-    //Bottone per vedere il libretto
-    private JButton librettoButton;
+    private Button studyButton;
+    private Button workButton;
+    private Button partyButton;
+    private Button sleepButton;
+    private Button librettoButton;
 
     private MainGameListener listener;
 
@@ -35,92 +33,90 @@ public class MainGameView extends JPanel {
         this.listener = listener;
     }
 
-    private String formattaTestoBottone(TipoAzione azione) {
-        //Formatta il testo del bottone dell'azione usando HTML
-        return "<html><center>" +
-                "<b>" + azione.getNomeDescrittivo() + "</b><br>" +
-                "<span style='font-size:9px; color:#555555;'>" + azione.getImpattoStatistiche() + "</span>" +
-                "</center></html>";
+    private Button createActionButton(TipoAzione azione, String cssClass) {
+        Button btn = new Button();
+        btn.getStyleClass().addAll("action-button", cssClass);
+        btn.setMaxWidth(Double.MAX_VALUE);
+        btn.setMaxHeight(Double.MAX_VALUE);
+
+        VBox content = new VBox(5);
+        content.setAlignment(Pos.CENTER);
+
+        Label title = new Label(azione.getNomeDescrittivo());
+        title.getStyleClass().add("action-button-title");
+
+        Label subtitle = new Label(azione.getImpattoStatistiche());
+        subtitle.getStyleClass().add("action-button-subtitle");
+
+        content.getChildren().addAll(title, subtitle);
+        btn.setGraphic(content);
+        return btn;
     }
 
     private void initializeComponents() {
-        turnLabel = new JLabel("Turni all'esame: 20", SwingConstants.CENTER);
-        turnLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        turnLabel = new Label("Turni all'esame: 20");
+        turnLabel.getStyleClass().add("turn-label");
 
-        knowledgeLabel = new JLabel("Conoscenza: 0");
-        energyLabel = new JLabel("Energia: 100");
-        stressLabel = new JLabel("Stress: 0");
-        moneyLabel = new JLabel("Denaro: 0€");
+        knowledgeLabel = new Label("Conoscenza: 0");
+        energyLabel = new Label("Energia: 100");
+        stressLabel = new Label("Stress: 0");
+        moneyLabel = new Label("Denaro: 0€");
 
-        studyButton = new JButton(formattaTestoBottone(TipoAzione.STUDIA));
-        workButton = new JButton(formattaTestoBottone(TipoAzione.LAVORA));
-        partyButton = new JButton(formattaTestoBottone(TipoAzione.FESTA));
-        sleepButton = new JButton(formattaTestoBottone(TipoAzione.DORMI));
+        studyButton = createActionButton(TipoAzione.STUDIA, "btn-study");
+        workButton = createActionButton(TipoAzione.LAVORA, "btn-work");
+        partyButton = createActionButton(TipoAzione.FESTA, "btn-party");
+        sleepButton = createActionButton(TipoAzione.DORMI, "btn-sleep");
 
-        librettoButton = new JButton("📖 " + TipoAzione.LIBRETTO.getNomeDescrittivo());
-
-        // Colore Studio: Azzurro
-        studyButton.setBackground(new Color(52, 152, 219));
-        studyButton.setForeground(Color.WHITE); // Testo bianco
-        studyButton.setFont(new Font("Arial", Font.BOLD, 14));
-
-        // Colore Lavoro: Rosso
-        workButton.setBackground(new Color(231, 76, 60));
-        workButton.setForeground(Color.WHITE);
-        workButton.setFont(new Font("Arial", Font.BOLD, 14));
-
-        // Colore Festa: Viola
-        partyButton.setBackground(new Color(155, 89, 182));
-        partyButton.setForeground(Color.WHITE);
-        partyButton.setFont(new Font("Arial", Font.BOLD, 14));
-
-        // Colore Dormi: Verde
-        sleepButton.setBackground(new Color(46, 204, 113));
-        sleepButton.setForeground(Color.WHITE);
-        sleepButton.setFont(new Font("Arial", Font.BOLD, 14));
-
-        // Colore Libretto: Giallo
-        librettoButton.setBackground(new Color(243, 156, 18));
-        librettoButton.setForeground(Color.WHITE);
+        librettoButton = new Button("📖 " + TipoAzione.LIBRETTO.getNomeDescrittivo());
+        librettoButton.getStyleClass().add("btn-libretto");
     }
 
     private void setupLayout() {
-        this.setLayout(new BorderLayout(10, 10));
-        this.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        this.setPadding(new Insets(15));
 
-        // Pannello Superiore: Titolo e Turno
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.add(turnLabel, BorderLayout.CENTER);
-        topPanel.add(librettoButton, BorderLayout.EAST);
-        this.add(topPanel, BorderLayout.NORTH);
+        // Top Panel
+        BorderPane topPanel = new BorderPane();
+        topPanel.setLeft(turnLabel);
+        topPanel.setRight(librettoButton);
+        topPanel.setPadding(new Insets(0, 0, 15, 0));
+        this.setTop(topPanel);
 
-        // Pannello Centrale: Statistiche
-        JPanel statsPanel = new JPanel(new GridLayout(4, 1, 5, 5));
-        statsPanel.setBorder(BorderFactory.createTitledBorder("Statistiche Studente"));
-        statsPanel.add(knowledgeLabel);
-        statsPanel.add(energyLabel);
-        statsPanel.add(stressLabel);
-        statsPanel.add(moneyLabel);
-        this.add(statsPanel, BorderLayout.CENTER);
+        // Center Panel (Statistiche)
+        VBox statsPanel = new VBox(10);
+        statsPanel.getStyleClass().add("stats-panel");
+        statsPanel.getChildren().addAll(
+                new Label("Statistiche Studente"),
+                knowledgeLabel, energyLabel, stressLabel, moneyLabel
+        );
+        this.setCenter(statsPanel);
+        BorderPane.setMargin(statsPanel, new Insets(0, 0, 15, 0));
 
-        // Pannello Inferiore: Azioni disponibili
-        JPanel actionsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
-        actionsPanel.setBorder(BorderFactory.createTitledBorder("Azioni del Turno"));
-        actionsPanel.add(studyButton);
-        actionsPanel.add(workButton);
-        actionsPanel.add(partyButton);
-        actionsPanel.add(sleepButton);
-        this.add(actionsPanel, BorderLayout.SOUTH);
+        // Bottom Panel (Azioni)
+        GridPane actionsPanel = new GridPane();
+        actionsPanel.setHgap(10);
+        actionsPanel.setVgap(10);
+        // Distribuzione equa dello spazio
+        ColumnConstraints cc = new ColumnConstraints();
+        cc.setPercentWidth(50);
+        actionsPanel.getColumnConstraints().addAll(cc, cc);
+        RowConstraints rc = new RowConstraints();
+        rc.setPercentHeight(50);
+        actionsPanel.getRowConstraints().addAll(rc, rc);
+
+        actionsPanel.add(studyButton, 0, 0);
+        actionsPanel.add(workButton, 1, 0);
+        actionsPanel.add(partyButton, 0, 1);
+        actionsPanel.add(sleepButton, 1, 1);
+
+        this.setBottom(actionsPanel);
     }
 
     private void setupInteractions() {
-        // Quando un bottone viene premuto, avvisiamo il listener
-        studyButton.addActionListener(e -> notifyAction(TipoAzione.STUDIA));
-        workButton.addActionListener(e -> notifyAction(TipoAzione.LAVORA));
-        partyButton.addActionListener(e -> notifyAction(TipoAzione.FESTA));
-        sleepButton.addActionListener(e -> notifyAction(TipoAzione.DORMI));
-
-        librettoButton.addActionListener(e -> notifyAction(TipoAzione.LIBRETTO));
+        studyButton.setOnAction(e -> notifyAction(TipoAzione.STUDIA));
+        workButton.setOnAction(e -> notifyAction(TipoAzione.LAVORA));
+        partyButton.setOnAction(e -> notifyAction(TipoAzione.FESTA));
+        sleepButton.setOnAction(e -> notifyAction(TipoAzione.DORMI));
+        librettoButton.setOnAction(e -> notifyAction(TipoAzione.LIBRETTO));
     }
 
     private void notifyAction(TipoAzione actionType) {
@@ -129,22 +125,11 @@ public class MainGameView extends JPanel {
         }
     }
 
-    /**
-     * Metodo che il Controller chiamerà per aggiornare la grafica
-     * in base allo stato reale del Modello.
-     */
     public void updateStats(int turn, int knowledge, int energy, int stress, int money) {
         turnLabel.setText("Turni all'esame: " + turn);
         knowledgeLabel.setText("Conoscenza: " + knowledge);
         energyLabel.setText("Energia: " + energy);
         stressLabel.setText("Stress: " + stress);
         moneyLabel.setText("Denaro: " + money + "€");
-    }
-
-    /**
-     * Metodo utile per mostrare a video gli imprevisti (Eventi casuali o Burnout)
-     */
-    public void showEventMessage(String title, String message) {
-        JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
 }

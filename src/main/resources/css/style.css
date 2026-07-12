@@ -13,7 +13,7 @@
 .turn-label {
     -fx-font-size: 28px; /* Dimensione aumentata */
     -fx-font-weight: bold;
-    -fx-text-fill: #d35400; /* Un colore arancione scuro per dare il senso di urgenza */
+    -fx-text-fill: #000000; /* Un colore arancione scuro per dare il senso di urgenza */
 }
 
 /* Stili per MainGameView */

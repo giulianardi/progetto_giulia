@@ -1,19 +1,17 @@
 package it.unicam.cs.mpgc.rpg130675.gui;
 
-import javax.swing.*;
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 
-
-/**
- * Gestisce l'aggiornamento dell'interfaccia grafica e le transizioni di stato visive del gioco.
- * Riceve gli aggiornamenti dal motore di gioco e li riflette sulla vista principale.
- */
 public class GameUIListener {
     private final MainGameView gameView;
-    private final JFrame frame;
+    private final Stage stage;
 
-    public GameUIListener(MainGameView gameView, JFrame frame) {
+    public GameUIListener(MainGameView gameView, Stage stage) {
         this.gameView = gameView;
-        this.frame = frame;
+        this.stage = stage;
     }
 
     public void aggiornaStatistiche(int turno, int conoscenza, int energia, int stress, int denaro) {
@@ -21,22 +19,26 @@ public class GameUIListener {
     }
 
     public void mostraMessaggio(String titolo, String messaggio) {
-        gameView.showEventMessage(titolo, messaggio);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Evento Casuale");
+        alert.setHeaderText(titolo);
+        alert.setContentText(messaggio);
+
+        alert.showAndWait();
     }
 
     public void triggerGameOver(String nomeStudente) {
         GameOverView gameOverView = new GameOverView(nomeStudente);
-        frame.getContentPane().removeAll();
-        frame.add(gameOverView);
-        frame.revalidate();
-        frame.repaint();
+        Scene currentScene = stage.getScene();
+        currentScene.setRoot(gameOverView);
     }
 
     public void triggerVittoria(String nomeStudente) {
-        JOptionPane.showMessageDialog(frame,
-                "Congratulazioni " + nomeStudente + "!\nHai superato tutti gli esami e ti sei laureato!",
-                "VITTORIA - LAUREA",
-                JOptionPane.INFORMATION_MESSAGE);
-        System.exit(0);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("VITTORIA - LAUREA");
+        alert.setHeaderText("Congratulazioni " + nomeStudente + "!");
+        alert.setContentText("Hai superato tutti gli esami e ti sei laureato!");
+        alert.showAndWait();
+        Platform.exit();
     }
 }

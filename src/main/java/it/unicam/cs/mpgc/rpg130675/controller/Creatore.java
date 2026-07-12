@@ -1,8 +1,6 @@
 package it.unicam.cs.mpgc.rpg130675.controller;
 
 import it.unicam.cs.mpgc.rpg130675.model.esame.Esame;
-import it.unicam.cs.mpgc.rpg130675.model.esame.EsameOrale;
-import it.unicam.cs.mpgc.rpg130675.model.esame.EsameScritto;
 import it.unicam.cs.mpgc.rpg130675.model.eventiCasuali.EventoCasuale;
 import it.unicam.cs.mpgc.rpg130675.model.eventiCasuali.bonus.Aperitivo;
 import it.unicam.cs.mpgc.rpg130675.model.eventiCasuali.bonus.AppuntiPerfetti;
@@ -13,7 +11,9 @@ import it.unicam.cs.mpgc.rpg130675.model.studente.Facolta;
 import it.unicam.cs.mpgc.rpg130675.model.studente.StudenteBase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -33,38 +33,29 @@ public class Creatore {
         return new StudenteBase(nomeScelto, facoltaScelta);
     }
 
+    // Il "Registro" che associa la Facolta alla sua Strategia di creazione
+    private final Map<Facolta, GeneratorePianoDiStudi> registroPianiDiStudi;
+
+    public Creatore() {
+        this.registroPianiDiStudi = new HashMap<>();
+
+        // Configurazione iniziale (Fase di Bootstrapping)
+        this.registroPianiDiStudi.put(Facolta.INFORMATICA_COMUNICAZIONE, new PianoInformaticaComunicazione());
+        this.registroPianiDiStudi.put(Facolta.CHIMICA, new PianoChimica());
+    }
+
     /**
-     * Genera una lista di esami da sostenere in base alla facoltà selezionata.
-     *
-     * @param facoltaScelta la facoltà di appartenenza dello studente.
-     * @return una lista di oggetti {@link Esame} specifici per la facoltà.
+     * Sfrutta il polimorfismo per ottenere la lista esami senza usare switch.
+     * Rispetta il principio Open/Closed a livello di logica di esecuzione.
      */
     public List<Esame> creaListaEsame(Facolta facoltaScelta) {
-        List<Esame> esamiDaSostenere = new ArrayList<>();
+        GeneratorePianoDiStudi generatore = registroPianiDiStudi.get(facoltaScelta);
 
-        switch (facoltaScelta) {
-            case INFORMATICA_COMUNICAZIONE:
-                esamiDaSostenere.add(new EsameScritto("Matematica", 50, 12));
-                esamiDaSostenere.add(new EsameScritto("Programmazione", 60, 12));
-                esamiDaSostenere.add(new EsameScritto("Inglese", 20, 6));
-                esamiDaSostenere.add(new EsameScritto("Fondamenti dell'informatica", 40, 6));
-                esamiDaSostenere.add(new EsameScritto("Architettura degli elaboratori", 30, 6));
-                esamiDaSostenere.add(new EsameScritto("Diritto dei prodotti digitali", 20, 6));
-                esamiDaSostenere.add(new EsameOrale("Comunicazione e marketing", 60, 12));
-                esamiDaSostenere.add(new EsameScritto("Modellazione della conoscenza", 50, 12));
-                break;
-            case CHIMICA:
-                esamiDaSostenere.add(new EsameScritto("Matematica 1", 50, 12));
-                esamiDaSostenere.add(new EsameOrale("Chimica generale", 60, 14));
-                esamiDaSostenere.add(new EsameScritto("Inglese", 20, 6));
-                esamiDaSostenere.add(new EsameOrale("Matematica 2", 40, 6));
-                esamiDaSostenere.add(new EsameScritto("Fisica 1", 30, 6));
-                esamiDaSostenere.add(new EsameOrale("Chimica analitica 1", 20, 14));
-                esamiDaSostenere.add(new EsameOrale("Chimica Fisica 1", 60, 12));
-                esamiDaSostenere.add(new EsameOrale("Chimica Organica 1", 50, 12));
-                break;
+        if (generatore == null) {
+            throw new IllegalArgumentException("Nessun piano di studi configurato per la facoltà: " + facoltaScelta);
         }
-        return esamiDaSostenere;
+
+        return generatore.generaEsami();
     }
 
     /**

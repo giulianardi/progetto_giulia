@@ -1,43 +1,31 @@
 package it.unicam.cs.mpgc.rpg130675.gui;
 
-import javax.swing.*;
-import java.awt.*;
+import javafx.application.Platform;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 
-
-/**
- * Schermata di Game Over. Ha la singola responsabilità di mostrare
- * l'esito negativo della partita e permettere l'uscita.
- */
-public class GameOverView extends JPanel {
-
-    private JButton exitButton;
+public class GameOverView extends VBox {
 
     public GameOverView(String nomeStudente) {
-        this.setLayout(new GridBagLayout());
-        this.setBackground(new Color(40, 40, 40)); // Sfondo scuro per il Game Over
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        this.setAlignment(Pos.CENTER);
+        this.setSpacing(20);
+        this.getStyleClass().add("game-over-root");
 
-        JLabel titleLabel = new JLabel("GAME OVER - BURNOUT TOTALE", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 26));
-        titleLabel.setForeground(Color.RED);
-        gbc.gridy = 0;
-        this.add(titleLabel, gbc);
+        Label titleLabel = new Label("GAME OVER - BURNOUT TOTALE");
+        titleLabel.getStyleClass().add("game-over-title");
 
-        JLabel messageLabel = new JLabel(
-                "<html><div style='text-align: center;'>" +
-                        "Mi dispiace " + nomeStudente + ", lo stress ha superato il limite sopportabile.<br>" +
-                        "Hai abbandonato gli studi per preservare la tua salute mentale." +
-                        "</div></html>", SwingConstants.CENTER);
-        messageLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        messageLabel.setForeground(Color.WHITE);
-        gbc.gridy = 1;
-        this.add(messageLabel, gbc);
+        Label messageLabel = new Label(
+                "Mi dispiace " + nomeStudente + ", lo stress ha superato il limite sopportabile.\n" +
+                        "Hai abbandonato gli studi per preservare la tua salute mentale."
+        );
+        messageLabel.getStyleClass().add("game-over-message");
+        messageLabel.setWrapText(true);
 
-        exitButton = new JButton("Chiudi Gioco");
-        exitButton.addActionListener(e -> System.exit(0)); // Chiude l'applicazione
-        gbc.gridy = 2;
-        this.add(exitButton, gbc);
+        Button exitButton = new Button("Chiudi Gioco");
+        exitButton.setOnAction(e -> Platform.exit());
+
+        this.getChildren().addAll(titleLabel, messageLabel, exitButton);
     }
 }

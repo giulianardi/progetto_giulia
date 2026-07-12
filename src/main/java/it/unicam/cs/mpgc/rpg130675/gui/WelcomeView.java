@@ -1,21 +1,17 @@
 package it.unicam.cs.mpgc.rpg130675.gui;
 
 import it.unicam.cs.mpgc.rpg130675.model.studente.Facolta;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 
-import javax.swing.*;
-import java.awt.*;
+public class WelcomeView extends GridPane {
 
-/**
- * Gestisce esclusivamente la visualizzazione e la raccolta dati iniziale.
- * Non contiene alcuna logica di creazione del personaggio (Single Responsibility Principle).
- */
-public class WelcomeView extends JPanel {
-
-    private JTextField nameField;
-    private JComboBox<Facolta> facultyComboBox;
-    private JButton startButton;
-
-    // Il listener a cui comunicheremo le azioni dell'utente
+    private TextField nameField;
+    private ComboBox<Facolta> facultyComboBox;
+    private Button startButton;
     private WelcomeScreenListener listener;
 
     public WelcomeView() {
@@ -29,69 +25,52 @@ public class WelcomeView extends JPanel {
     }
 
     private void initializeComponents() {
-        nameField = new JTextField(15);
-
-        // Le scelte sono hardcoded per ora, ma in una versione avanzata
-        // potrebbero arrivare dal Model (es. un file di configurazione)
-        facultyComboBox = new JComboBox<>(Facolta.values());
-
-        startButton = new JButton("Inizia la tua Carriera Universitaria");
+        nameField = new TextField();
+        facultyComboBox = new ComboBox<>();
+        facultyComboBox.getItems().addAll(Facolta.values());
+        if (!facultyComboBox.getItems().isEmpty()) {
+            facultyComboBox.getSelectionModel().selectFirst();
+        }
+        startButton = new Button("Inizia la tua Carriera Universitaria");
     }
 
     private void setupLayout() {
-        // Usiamo un layout pulito per centrare i contenuti
-        this.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        this.setAlignment(Pos.CENTER);
+        this.setHgap(10);
+        this.setVgap(15);
+        this.setPadding(new Insets(20));
 
-        // Titolo
-        JLabel titleLabel = new JLabel("UniSurvive", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        this.add(titleLabel, gbc);
+        Label titleLabel = new Label("UniSurvive");
+        titleLabel.getStyleClass().add("title-label");
+        GridPane.setHalignment(titleLabel, HPos.CENTER);
+        this.add(titleLabel, 0, 0, 2, 1);
 
-        // Campo Nome
-        gbc.gridwidth = 1;
-        gbc.gridy = 1;
-        this.add(new JLabel("Nome dello Studente:"), gbc);
+        this.add(new Label("Nome dello Studente:"), 0, 1);
+        this.add(nameField, 1, 1);
 
-        gbc.gridx = 1;
-        this.add(nameField, gbc);
+        this.add(new Label("Scegli la Facoltà:"), 0, 2);
+        this.add(facultyComboBox, 1, 2);
 
-        // Campo Facoltà
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        this.add(new JLabel("Scegli la Facoltà:"), gbc);
-
-        gbc.gridx = 1;
-        this.add(facultyComboBox, gbc);
-
-        // Bottone Start
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.gridwidth = 2;
-        this.add(startButton, gbc);
+        GridPane.setHalignment(startButton, HPos.CENTER);
+        this.add(startButton, 0, 3, 2, 1);
     }
 
     private void setupInteractions() {
-        nameField.addActionListener(e -> startButton.doClick());
+        nameField.setOnAction(e -> startButton.fire());
 
-        startButton.addActionListener(e -> {
+        startButton.setOnAction(e -> {
             String enteredName = nameField.getText().trim();
-            Facolta selectedFaculty = (Facolta) facultyComboBox.getSelectedItem();
+            Facolta selectedFaculty = facultyComboBox.getValue();
 
             if (enteredName.isEmpty()) {
-                JOptionPane.showMessageDialog(this,
-                        "Il nome dello studente non può essere vuoto!",
-                        "Errore",
-                        JOptionPane.ERROR_MESSAGE);
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Errore");
+                alert.setHeaderText(null);
+                alert.setContentText("Il nome dello studente non può essere vuoto!");
+                alert.showAndWait();
                 return;
             }
 
-            // Se tutto è corretto, avvisiamo chi si occupa della logica
             if (listener != null) {
                 listener.onGameStartRequested(enteredName, selectedFaculty);
             }

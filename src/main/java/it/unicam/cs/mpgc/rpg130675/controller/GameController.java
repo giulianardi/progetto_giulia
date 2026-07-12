@@ -122,8 +122,7 @@ public class GameController {
             eventoMisterioso.innesca(this.studente);
 
             if (this.uiListener != null) {
-                String messaggioFormattato = "<html><b>" + eventoMisterioso.getTitolo() + "</b><br><br>" + eventoMisterioso.getDescrizione() + "</html>";
-                uiListener.mostraMessaggio("Evento Casuale", messaggioFormattato);
+                uiListener.mostraMessaggio(eventoMisterioso.getTitolo(), eventoMisterioso.getDescrizione());
             }
         }
 
