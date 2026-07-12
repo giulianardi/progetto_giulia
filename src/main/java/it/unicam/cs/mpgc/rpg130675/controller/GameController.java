@@ -60,6 +60,7 @@ public class GameController {
 
         this.turniAllEsame = 20;
         this.generatoreCasuale = new Random();
+        this.motoreEventi = new MotoreEventi();
 
         this.archivioStorico = new JsonStoricoRepository();
 
@@ -129,12 +130,12 @@ public class GameController {
         if (esitoPromozione) {
             uiListener.mostraMessaggio("Esame Superato!", "Hai superato l'esame di " + esameAttuale.getNomeMateria() + "!");
             archivioStorico.salvaEsameSuperato(esameAttuale);
+
             if (!this.esamiDaSostenere.isEmpty()) {
                 this.esameAttuale = this.esamiDaSostenere.remove(0);
                 this.turniAllEsame = 20;
             } else {
                 uiListener.triggerVittoria(this.studente.getNome());
-                return;
             }
         } else {
             uiListener.mostraMessaggio("Bocciato...", "Hai fallito l'esame di " + esameAttuale.getNomeMateria() + ". Lo stress aumenta!");
