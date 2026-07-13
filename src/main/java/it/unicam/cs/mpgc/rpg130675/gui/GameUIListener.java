@@ -3,7 +3,6 @@ package it.unicam.cs.mpgc.rpg130675.gui;
 import it.unicam.cs.mpgc.rpg130675.model.carriera.EsameSalvato;
 import it.unicam.cs.mpgc.rpg130675.model.carriera.LibrettoUniversitario;
 import javafx.application.Platform;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
@@ -11,10 +10,12 @@ public class GameUIListener implements GameOutputListener{
 
     private final MainGameView gameView;
     private final Stage stage;
+    private final Runnable onRestartAction;
 
-    public GameUIListener(MainGameView gameView, Stage stage) {
+    public GameUIListener(MainGameView gameView, Stage stage, Runnable onRestartAction) {
         this.gameView = gameView;
         this.stage = stage;
+        this.onRestartAction = onRestartAction;
     }
 
     public void aggiornaStatistiche(int turno, int conoscenza, int energia, int stress, int denaro) {
@@ -57,6 +58,7 @@ public class GameUIListener implements GameOutputListener{
     @Override
     public void triggerGameOver(String nomeStudente) {
         GameOverView gameOverView = new GameOverView(nomeStudente);
+        gameOverView.setOnRestartListener(onRestartAction);
         stage.getScene().setRoot(gameOverView);
     }
 

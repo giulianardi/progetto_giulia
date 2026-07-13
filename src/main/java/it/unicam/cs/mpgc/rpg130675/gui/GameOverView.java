@@ -8,6 +8,8 @@ import javafx.scene.layout.VBox;
 
 public class GameOverView extends VBox {
 
+    private Runnable onRestartListener;
+
     public GameOverView(String nomeStudente) {
         this.setAlignment(Pos.CENTER);
         this.setSpacing(20);
@@ -23,9 +25,17 @@ public class GameOverView extends VBox {
         messageLabel.getStyleClass().add("game-over-message");
         messageLabel.setWrapText(true);
 
-        Button exitButton = new Button("Chiudi Gioco");
-        exitButton.setOnAction(e -> Platform.exit());
+        Button restartButton = new Button("Ricomincia la partita");
+        restartButton.setOnAction(e -> {
+            if (onRestartListener != null) {
+                onRestartListener.run();
+            }
+        });
 
-        this.getChildren().addAll(titleLabel, messageLabel, exitButton);
+        this.getChildren().addAll(titleLabel, messageLabel, restartButton);
+    }
+
+    public void setOnRestartListener(Runnable onRestartListener) {
+        this.onRestartListener = onRestartListener;
     }
 }

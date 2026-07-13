@@ -42,4 +42,4 @@ public class Studio implements Attivita {
             throw new EccezioneInsufficienzaRisorse("L'energia non è sufficiente per studiare!");
         }
     }
-    }
+}

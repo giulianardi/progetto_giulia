@@ -31,11 +31,12 @@ public class GameController {
     private int turniAllEsame;
     private MotoreEventi motoreEventi;
 
-    private StoricoRepository archivioStorico;
+    private final StoricoRepository archivioStorico;
 
     private GameOutputListener uiListener;
 
-    public GameController(GameOutputListener uiListener) {
+    public GameController(StoricoRepository archivioStorico, GameOutputListener uiListener) {
+        this.archivioStorico = archivioStorico;
         this.uiListener = uiListener;
     }
 
@@ -58,8 +59,6 @@ public class GameController {
 
         this.turniAllEsame = 20;
         this.motoreEventi = new MotoreEventi();
-
-        this.archivioStorico = new JsonStoricoRepository();
 
         this.archivioStorico.azzeraStorico();
 

@@ -10,6 +10,8 @@ import it.unicam.cs.mpgc.rpg130675.model.azioni.Riposo;
 import it.unicam.cs.mpgc.rpg130675.model.azioni.Studio;
 
 import it.unicam.cs.mpgc.rpg130675.model.studente.Facolta;
+import it.unicam.cs.mpgc.rpg130675.persistence.JsonStoricoRepository;
+import it.unicam.cs.mpgc.rpg130675.persistence.StoricoRepository;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -32,14 +34,20 @@ public class Applicazione extends Application {
 
         WelcomeView welcomeView = new WelcomeView();
 
-        mainScene = new Scene(welcomeView, 600, 500);
-
+        mainScene = new Scene(new javafx.scene.layout.Pane(), 600, 500);
         caricaStili(mainScene);
 
-        welcomeView.setWelcomeScreenListener((nome, facolta) -> avviaGioco(nome, facolta));
+        mostraSchermataBenvenuto();
 
         this.primaryStage.setScene(mainScene);
         this.primaryStage.show();
+    }
+
+    public void mostraSchermataBenvenuto() {
+        WelcomeView welcomeView = new WelcomeView();
+        welcomeView.setWelcomeScreenListener((nome, facolta) -> avviaGioco(nome, facolta));
+
+        mainScene.setRoot(welcomeView);
     }
 
     private void caricaStili(Scene scene) {
@@ -55,8 +63,11 @@ public class Applicazione extends Application {
     private void avviaGioco(String nome, Facolta facolta) {
         MainGameView gameView = new MainGameView();
 
-        GameUIListener uiListener = new GameUIListener(gameView, primaryStage);
-        GameController controller = new GameController(uiListener);
+        StoricoRepository repository = new JsonStoricoRepository();
+        GameUIListener uiListener = new GameUIListener(gameView, primaryStage, this::mostraSchermataBenvenuto);
+
+        GameController controller = new GameController(repository, uiListener);
+
 
         controller.avviaPartita(nome, facolta);
 
